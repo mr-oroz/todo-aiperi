@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import AddTodo from './components/add-todo';
+import Header from './components/header'
+import List from './components/list';
+import uniqid from 'uniqid';
+const App = () => {
+  const [task, setTask] = useState([])
+  const addTodo = (value) => {
+    const newItem = {
+      title: value,
+      completed: false,
+      id: uniqid()
+    }
+    
+    const newArr = [...task, newItem]
+    setTask(newArr)
+  }
 
-function App() {
+  const removeItem = (id) => {
+    setTask(() => task.filter(item => item.id !== id ))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Header length={task.length}/>
+      <AddTodo addTodo={addTodo}/>
+      <List removeItem={removeItem} task={task}/>
     </div>
   );
-}
+};
 
 export default App;
